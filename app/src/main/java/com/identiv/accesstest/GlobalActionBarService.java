@@ -45,5 +45,30 @@ public class GlobalActionBarService extends AccessibilityService {
         LayoutInflater inflater = LayoutInflater.from(this);
         inflater.inflate(R.layout.action_bar, mLayout);
         wm.addView(mLayout, lp);
+        configurePowerButton();
+        configureVolumeButton();
     }
+
+    private void configurePowerButton() {
+        Button powerButton = (Button) mLayout.findViewById(R.id.power);
+        powerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performGlobalAction(GLOBAL_ACTION_POWER_DIALOG);
+            }
+        });
+    }
+
+    private void configureVolumeButton() {
+        Button volumeUpButton = (Button) mLayout.findViewById(R.id.volume_up);
+        volumeUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+            }
+        });
+    }
+
 }
