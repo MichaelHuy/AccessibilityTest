@@ -6,6 +6,7 @@ import android.accessibilityservice.GestureDescription;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,13 @@ public class GlobalActionBarService extends AccessibilityService {
     WindowManager wm;
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-
+        Log.i("EVENT", "Huy ");
+        if (mLayout != null) {
+            Log.i("EVENT", "Huy inner");
+//            mLayout.setVisibility(0);
+//            wm.removeView(mLayout);
+            mLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -48,7 +55,9 @@ public class GlobalActionBarService extends AccessibilityService {
         wm.addView(mLayout, lp);
 //        configurePowerButton();
         configureVolumeButton();
-        wm.removeView(mLayout);
+//        wm.removeView(mLayout);
+        Log.i("EVENT", "Huy onServiceConnected");
+//        mLayout.setVisibility(View.GONE);
     }
 
 //    private void configurePowerButton() {
