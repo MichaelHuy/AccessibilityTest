@@ -20,6 +20,7 @@ import java.util.Deque;
 
 public class GlobalActionBarService extends AccessibilityService {
     FrameLayout mLayout;
+    WindowManager wm;
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
@@ -33,7 +34,7 @@ public class GlobalActionBarService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         // Create an overlay and display the action bar
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         mLayout = new FrameLayout(this);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
@@ -45,19 +46,20 @@ public class GlobalActionBarService extends AccessibilityService {
         LayoutInflater inflater = LayoutInflater.from(this);
         inflater.inflate(R.layout.action_bar, mLayout);
         wm.addView(mLayout, lp);
-        configurePowerButton();
+//        configurePowerButton();
         configureVolumeButton();
+        wm.removeView(mLayout);
     }
 
-    private void configurePowerButton() {
-        Button powerButton = (Button) mLayout.findViewById(R.id.power);
-        powerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performGlobalAction(GLOBAL_ACTION_POWER_DIALOG);
-            }
-        });
-    }
+//    private void configurePowerButton() {
+//        Button powerButton = (Button) mLayout.findViewById(R.id.power);
+//        powerButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                performGlobalAction(GLOBAL_ACTION_POWER_DIALOG);
+//            }
+//        });
+//    }
 
     private void configureVolumeButton() {
         Button volumeUpButton = (Button) mLayout.findViewById(R.id.volume_up);
