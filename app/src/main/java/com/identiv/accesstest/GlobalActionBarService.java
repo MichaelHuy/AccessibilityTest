@@ -18,15 +18,28 @@ import android.widget.FrameLayout;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class GlobalActionBarService extends AccessibilityService {
+    static final String TAG = "MyLogService";
     FrameLayout mLayout;
     WindowManager wm;
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        Log.i("EVENT", "Huy ");
+//        for (int i=0; i<count; i++) {
+//            Object record = event.getRecord(i);
+//            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//            String json = ow.writeValueAsString(record);
+//        }
+
+        Log.v(TAG, String.format(
+                "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
+                getEventType(event), event.getClassName(), event.getPackageName(),
+                event.getEventTime(), getEventText(event)));
+
         if (mLayout != null) {
-            Log.i("EVENT", "Huy inner");
+//            Log.i("EVENT", "Huy inner");
 //            mLayout.setVisibility(0);
 //            wm.removeView(mLayout);
             mLayout.setVisibility(View.GONE);
@@ -80,6 +93,34 @@ public class GlobalActionBarService extends AccessibilityService {
                         AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
             }
         });
+    }
+
+    private String getEventType(AccessibilityEvent event) {
+        switch (event.getEventType()) {
+            case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
+                return "TYPE_NOTIFICATION_STATE_CHANGED";
+            case AccessibilityEvent.TYPE_VIEW_CLICKED:
+                return "TYPE_VIEW_CLICKED";
+            case AccessibilityEvent.TYPE_VIEW_FOCUSED:
+                return "TYPE_VIEW_FOCUSED";
+            case AccessibilityEvent.TYPE_VIEW_LONG_CLICKED:
+                return "TYPE_VIEW_LONG_CLICKED";
+            case AccessibilityEvent.TYPE_VIEW_SELECTED:
+                return "TYPE_VIEW_SELECTED";
+            case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
+                return "TYPE_WINDOW_STATE_CHANGED";
+            case AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED:
+                return "TYPE_VIEW_TEXT_CHANGED";
+        }
+        return "default";
+    }
+
+    private String getEventText(AccessibilityEvent event) {
+        StringBuilder sb = new StringBuilder();
+        for (CharSequence s : event.getText()) {
+            sb.append(s);
+        }
+        return sb.toString();
     }
 
 }

@@ -17,6 +17,7 @@
 
 <resources>
     <string name="app_name">Global Action Bar Service</string>
+    <string name="accessibility_service_description">Global Action Bar Service</string>
     <string name="power">Power</string>
     <string name="volume">Vol +</string>
     <string name="scroll">Scroll</string>
